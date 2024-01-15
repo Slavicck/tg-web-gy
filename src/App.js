@@ -1,20 +1,21 @@
 import './App.css';
-const tg = window.Telegram.WebApp;
+
+//const tg = window.Telegram.WebApp;
 
 function App() {
 
-use_effect(() => {
-  tg.ready();
-},[])
+  // use_effect(() => {
+  //   tg.ready();
+  // }, [])
 
-  const on_close = () => {
-    tg.close();
-  }
+  // const on_close = () => {
+  //   tg.close();
+  // }
 
   return (
     <div className="App">
       WORK
-      <button>Закрыть</button>
+{/* <button onClick={on_close}>Закрыть</button> */}
     </div>
   );
 }
