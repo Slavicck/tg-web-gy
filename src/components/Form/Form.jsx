@@ -5,7 +5,7 @@ import {useTelegram} from "../../hooks/useTelegram";
 const Form = () => {
     const [country, setCountry] = useState('');
     const [street, setStreet] = useState('');
-    const [subject, setSubject] = useState('physical');
+    const [subject, setSubject] = useState('address_2');
     const {tg} = useTelegram();
 
     const onSendData = useCallback(() => {
@@ -52,7 +52,7 @@ const Form = () => {
 
     return (
         <div className={"form"}>
-            <h3>Введите ваши данные</h3>
+            {/* <h3>Введите ваши данные</h3>
             <input
                 className={'input'}
                 type="text"
@@ -67,9 +67,17 @@ const Form = () => {
                 value={street}
                 onChange={onChangeStreet}
             />
+                <input
+                className={'input'}
+                type="text"
+                placeholder={'Твой никнейм в телеграм (НАПРИМЕР, t.me/korolevsergey1001)'}
+                value={country}
+                onChange={onChangeCountry}
+            /> */}
             <select value={subject} onChange={onChangeSubject} className={'select'}>
-                <option value={'physical'}>Физ. лицо</option>
-                <option value={'legal'}>Юр. лицо</option>
+                <option value={'address_1'}>Москва, м. Нахимовский проспект, Симферопольский проезд, 18 </option>
+                <option value={'address_2'}>Москва, м. Текстильщики, 1-ый Грайвороновский проезд, 13к2</option>
+                <option value={'address_3'}>Москва, м. Щукинская, Новощукинская, 4</option>
             </select>
         </div>
     );
