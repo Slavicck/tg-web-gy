@@ -83,7 +83,7 @@ return (
         {/* Текстовое поле для ввода значения поиска */}
         <input
             type="text"
-            placeholder="Поиск..."
+            placeholder="Поиск"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
         />
