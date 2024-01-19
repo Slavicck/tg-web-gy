@@ -19,7 +19,7 @@ const ProductItem = ({ product, className, onAdd }) => {
                 <span>Сбор: <b>{product.collect}</b></span>
             </div>
             <div className={'wholesale_price'}>
-                <span>Стоимость: <b>{product.wholesale_price}</b></span>
+                <span>Крупный опт: <b>{product.wholesale_price}</b></span>
             </div>
             
             <div className={'price'}>
