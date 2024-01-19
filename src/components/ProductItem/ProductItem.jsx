@@ -2,7 +2,7 @@ import React from 'react';
 import Button from "../Button/Button";
 import './ProductItem.css';
 
-const ProductItem = ({product, className, onAdd}) => {
+const ProductItem = ({ product, className, onAdd }) => {
 
     const onAddHandler = () => {
         onAdd(product);
@@ -10,9 +10,18 @@ const ProductItem = ({product, className, onAdd}) => {
 
     return (
         <div className={'product ' + className}>
-            <div className={'img'}/>
+            <div className={'img'} />
             <div className={'title'}>{product.title}</div>
-            <div className={'description'}>{product.description}</div>
+            <div className={'rrc'}>
+                <span>РРЦ: <b>{product.rrc}</b></span>
+            </div>
+            <div className={'collect'}>
+                <span>Сбор: <b>{product.collect}</b></span>
+            </div>
+            <div className={'wholesale_price'}>
+                <span>Стоимость: <b>{product.wholesale_price}</b></span>
+            </div>
+            
             <div className={'price'}>
                 <span>Стоимость: <b>{product.price}</b></span>
             </div>
