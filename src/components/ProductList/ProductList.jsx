@@ -7,6 +7,7 @@ import { useTelegram } from "../../hooks/useTelegram";
 const ProductList = () => {
     const [products, setProducts] = useState([]);
     const [addedItems, setAddedItems] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
     const { tg, queryId } = useTelegram();
 
     useEffect(() => {
@@ -73,14 +74,28 @@ const ProductList = () => {
         }
     };
 
-    return (
+    const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
+return (
+    <div>
+        {/* Текстовое поле для ввода значения поиска */}
+        <input
+            type="text"
+            placeholder="Поиск..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+        />
+
+        {/* Отображение отфильтрованных продуктов */}
         <div className={'list'}>
-            {products.map((item) => (
+            {filteredProducts.map((item) => (
                 <ProductItem product={item} onAdd={onAdd} className={'item'} key={item.id} />
             ))}
         </div>
-        
-    );
+    </div>
+);
 };
 
 export default ProductList;
