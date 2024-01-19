@@ -25,7 +25,7 @@ const ProductList = () => {
 
     const getTotalPrice = (items = []) => {
         return items.reduce((acc, item) => {
-            return acc + item.price;
+            return acc += item.price;
         }, 0);
     };
 
@@ -79,7 +79,7 @@ const ProductList = () => {
                 <ProductItem product={item} onAdd={onAdd} className={'item'} key={item.id} />
             ))}
         </div>
-
+        
     );
 };
 
