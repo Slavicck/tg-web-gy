@@ -80,7 +80,6 @@ const ProductList = () => {
 
 return (
     <div>
-        {/* Текстовое поле для ввода значения поиска */}
         <input className={'input'}
             type="text"
             placeholder="Поиск"
@@ -88,7 +87,6 @@ return (
             onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        {/* Отображение отфильтрованных продуктов */}
         <div className={'list'}>
             {filteredProducts.map((item) => (
                 <ProductItem product={item} onAdd={onAdd} className={'item'} key={item.id} />
