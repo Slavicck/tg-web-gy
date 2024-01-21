@@ -15,13 +15,14 @@ const ProductItem = ({ product, className, onAdd }) => {
             <div className={'rrc'}>
                 <span>РРЦ: <b>{product.rrc}</b></span>
             </div>
+            <div className={'all-price'}>
             <div className={'collect'}>
                 <span>Сбор: <b>{product.collect}</b></span>
             </div>
             <div className={'wholesale_price'}>
                 <span>Крупный опт: <b>{product.wholesale_price}</b></span>
             </div>
-            
+            </div>
             <div className={'price'}>
                 <span>Стоимость: <b>{product.price}</b></span>
             </div>
