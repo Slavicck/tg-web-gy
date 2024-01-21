@@ -11,8 +11,8 @@
 
 .input {
     width: 100%;
-    /* box-sizing: border-box;
-    margin: 10px auto; */
+    box-sizing: border-box;
+    margin: 10px auto;
     background: var(--tg-theme-button-color);
     color: white;
 }
