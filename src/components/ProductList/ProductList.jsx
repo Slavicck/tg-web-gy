@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { use_state, use_effect, use_callback } from 'react';
 import './ProductList.css';
 import ProductItem from "../ProductItem/ProductItem";
-import { useTelegram } from "../../hooks/useTelegram";
+import { use_telegram } from "../../hooks/UseTelegram";
 
 
 const ProductList = () => {
-    const [products, setProducts] = useState([]);
-    const [addedItems, setAddedItems] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
+    const [products, setProducts] = use_state([]);
+    const [added_items, set_added_items] = use_state([]);
+    const [search_term, set_search_term] = use_state('');
     const { tg, query_id } = useTelegram();
 
-    useEffect(() => {
+    use_effect(() => {
         const fetchProducts = async () => {
             try {
                 const response = await fetch('http://localhost:8000/fetch-products');
@@ -24,16 +24,16 @@ const ProductList = () => {
         fetchProducts();
     }, []);
 
-    const getTotalPrice = (items = []) => {
+    const get_total_price = (items = []) => {
         return items.reduce((acc, item) => {
             return acc += parseInt(item.price);
         }, 0);
     };
 
-    const onSendData = useCallback(() => {
+    const on_send_data = use_callback(() => {
         const data = {
-            products: addedItems,
-            totalPrice: getTotalPrice(addedItems),
+            products: added_items,
+            total_price: get_total_price(added_items),
             query_id,
         };
         fetch('http://localhost:8000/web-data', {
@@ -43,57 +43,57 @@ const ProductList = () => {
             },
             body: JSON.stringify(data),
         });
-    }, [addedItems, query_id]);
+    }, [added_items, query_id]);
 
-    useEffect(() => {
-        tg.onEvent('mainButtonClicked', onSendData);
+    use_effect(() => {
+        tg.onEvent('mainButtonClicked', on_send_data);
         return () => {
-            tg.offEvent('mainButtonClicked', onSendData);
+            tg.offEvent('mainButtonClicked', on_send_data);
         };
-    }, [onSendData, tg]);
+    }, [on_send_data, tg]);
 
     const onAdd = (product) => {
-        const alreadyAdded = addedItems.find((item) => item.id === product.id);
-        let newItems = [];
+        const already_added = added_items.find((item) => item.id === product.id);
+        let new_Items = [];
 
-        if (alreadyAdded) {
-            newItems = addedItems.filter((item) => item.id !== product.id);
+        if (already_added) {
+            new_Items = added_items.filter((item) => item.id !== product.id);
         } else {
-            newItems = [...addedItems, product];
+            new_Items = [...added_items, product];
         }
 
-        setAddedItems(newItems);
+        set_added_items(new_Items);
 
-        if (newItems.length === 0) {
+        if (new_Items.length === 0) {
             tg.MainButton.hide();
         } else {
             tg.MainButton.show();
             tg.MainButton.setParams({
-                text: `Купить ${getTotalPrice(newItems)}`,
+                text: `Купить ${get_total_price(new_Items)}`,
             });
         }
     };
 
     const filteredProducts = products.filter((product) =>
-    product.title.toLowerCase().includes(searchTerm.toLowerCase())
-);
+        product.title.toLowerCase().includes(search_term.toLowerCase())
+    );
 
-return (
-    <div>
-        <input className={'input'}
-            type="text"
-            placeholder="Поиск"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-        />
+    return (
+        <div>
+            <input className={'input'}
+                type="text"
+                placeholder="Поиск"
+                value={search_term}
+                onChange={(e) => set_search_term(e.target.value)}
+            />
 
-        <div className={'list'}>
-            {filteredProducts.map((item) => (
-                <ProductItem product={item} onAdd={onAdd} className={'item'} key={item.id} />
-            ))}
+            <div className={'list'}>
+                {filteredProducts.map((item) => (
+                    <ProductItem product={item} onAdd={onAdd} className={'item'} key={item.id} />
+                ))}
+            </div>
         </div>
-    </div>
-);
+    );
 };
 
 export default ProductList;

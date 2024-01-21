@@ -1,14 +1,14 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { use_callback, use_effect, use_state } from 'react';
 import './Form.css';
-import {useTelegram} from "../../hooks/useTelegram";
+import { useTelegram } from "../../hooks/UseTelegram";
 
 const Form = () => {
-    const [country, setCountry] = useState('');
-    const [street, setStreet] = useState('');
-    const [subject, setSubject] = useState('address_2');
-    const {tg} = useTelegram();
+    const [country, set_country] = use_state('');
+    const [street, set_street] = use_state('');
+    const [subject, set_subject] = use_state('address_2');
+    const { tg } = use_telegram();
 
-    const onSendData = useCallback(() => {
+    const on_send_data = use_callback(() => {
         const data = {
             // country,
             // street,
@@ -17,37 +17,37 @@ const Form = () => {
         tg.sendData(JSON.stringify(data));
     }, [/*country, street,*/ subject])
 
-    useEffect(() => {
-        tg.onEvent('mainButtonClicked', onSendData)
+    use_effect(() => {
+        tg.onEvent('mainButtonClicked', on_send_data)
         return () => {
-            tg.offEvent('mainButtonClicked', onSendData)
+            tg.offEvent('mainButtonClicked', on_send_data)
         }
-    }, [onSendData])
+    }, [on_send_data])
 
-    useEffect(() => {
+    use_effect(() => {
         tg.MainButton.setParams({
             text: 'Отправить данные'
         })
     }, [])
 
-    useEffect(() => {
-        if(!street || !country) {
+    use_effect(() => {
+        if (!street || !country) {
             tg.MainButton.hide();
         } else {
             tg.MainButton.show();
         }
     }, [country, street])
 
-    const onChangeCountry = (e) => {
-        setCountry(e.target.value)
+    const on_change_country = (e) => {
+        set_country(e.target.value)
     }
 
-    const onChangeStreet = (e) => {
-        setStreet(e.target.value)
+    const on_change_street = (e) => {
+        set_street(e.target.value)
     }
 
-    const onChangeSubject = (e) => {
-        setSubject(e.target.value)
+    const on_change_subject = (e) => {
+        set_subject(e.target.value)
     }
 
     return (
@@ -74,7 +74,7 @@ const Form = () => {
                 value={country}
                 onChange={onChangeCountry}
             /> */}
-            <select value={subject} onChange={onChangeSubject} className={'select'}>
+            <select value={subject} onChange={on_change_subject} className={'select'}>
                 <option value={'address_1'}>Москва, м. Нахимовский проспект, Симферопольский проезд, 18 </option>
                 <option value={'address_2'}>Москва, м. Текстильщики, 1-ый Грайвороновский проезд, 13к2</option>
                 <option value={'address_3'}>Москва, м. Щукинская, Новощукинская, 4</option>
