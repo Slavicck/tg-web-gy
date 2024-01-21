@@ -8,7 +8,7 @@ const ProductList = () => {
     const [products, setProducts] = useState([]);
     const [addedItems, setAddedItems] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const { tg, queryId } = useTelegram();
+    const { tg, query_id } = useTelegram();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -34,7 +34,7 @@ const ProductList = () => {
         const data = {
             products: addedItems,
             totalPrice: getTotalPrice(addedItems),
-            queryId,
+            query_id,
         };
         fetch('http://localhost:8000/web-data', {
             method: 'POST',
@@ -43,7 +43,7 @@ const ProductList = () => {
             },
             body: JSON.stringify(data),
         });
-    }, [addedItems, queryId]);
+    }, [addedItems, query_id]);
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
