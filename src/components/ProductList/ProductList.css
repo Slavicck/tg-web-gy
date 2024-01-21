@@ -11,6 +11,7 @@
 
 .input {
     width: 100%;
+    background: lightgray;
     box-sizing: border-box;
     margin: 10px auto;
     background: var(--tg-theme-button-color);
