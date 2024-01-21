@@ -81,7 +81,7 @@ const ProductList = () => {
 return (
     <div>
         {/* Текстовое поле для ввода значения поиска */}
-        <input
+        <input className={'input'}
             type="text"
             placeholder="Поиск"
             value={searchTerm}
