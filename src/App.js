@@ -1,15 +1,15 @@
 import './App.css';
-import { use_effect } from "react";
-import { use_Telegram } from "./hooks/use_telegram";
+import { useEffect } from "react";
+import { useTelegram } from "./hooks/useTelegram";
 import Header from "./components/Header/Header";
 import { Route, Routes } from 'react-router-dom'
 import ProductList from "./components/ProductList/ProductList";
 import Form from "./components/Form/Form";
 
 function App() {
-    const { on_toggle_button, tg } = use_Telegram();
+    const { on_toggle_button, tg } = useTelegram();
 
-    use_effect(() => {
+    useEffect(() => {
         tg.ready();
     }, [])
 
