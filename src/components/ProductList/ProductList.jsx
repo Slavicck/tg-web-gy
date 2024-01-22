@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './ProductList.css';
 import ProductItem from "../ProductItem/ProductItem";
-import { useTelegram } from "../../hooks/useTelegram";
+import {useTelegram} from "../../hooks/useTelegram";
+
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
@@ -29,25 +30,20 @@ const ProductList = () => {
         }, 0);
     };
 
-    const onSendData = useCallback(async () => {
+    const onSendData = useCallback(() => {
         const data = {
             products: addedItems,
             total_price: getTotalPrice(addedItems),
             username: user?.username,
             queryId,
         };
-
-        try {
-            const response = await fetch('http://localhost:8000/web-data', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-        } catch (error) {
-            console.error('Error sending data:', error);
-        }
+        fetch('http://localhost:8000/web-data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
     }, [addedItems, queryId]);
 
     useEffect(() => {
@@ -85,8 +81,7 @@ const ProductList = () => {
 
     return (
         <div>
-            <input
-                className={'input'}
+            <input className={'input'}
                 type="text"
                 placeholder="Поиск"
                 value={searchTerm}
