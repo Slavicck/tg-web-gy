@@ -1,16 +1,16 @@
-import React, { use_state, use_effect, use_callback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './ProductList.css';
 import ProductItem from "../ProductItem/ProductItem";
-import { use_telegram } from "../../hooks/UseTelegram";
+import {useTelegram} from "../../hooks/useTelegram";
 
 
 const ProductList = () => {
-    const [products, setProducts] = use_state([]);
-    const [added_items, set_added_items] = use_state([]);
-    const [search_term, set_search_term] = use_state('');
-    const { tg, query_id } = useTelegram();
+    const [products, setProducts] = useState([]);
+    const [addedItems, setAddedItems] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const { tg, queryId } = useTelegram();
 
-    use_effect(() => {
+    useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const response = await fetch('http://localhost:8000/fetch-products');
@@ -24,17 +24,17 @@ const ProductList = () => {
         fetchProducts();
     }, []);
 
-    const get_total_price = (items = []) => {
+    const getTotalTrice = (items = []) => {
         return items.reduce((acc, item) => {
             return acc += parseInt(item.price);
         }, 0);
     };
 
-    const on_send_data = use_callback(() => {
+    const onSendData = useCallback(() => {
         const data = {
-            products: added_items,
-            total_price: get_total_price(added_items),
-            query_id,
+            products: addedItems,
+            total_price: getTotalTrice(addedItems),
+            queryId,
         };
         fetch('http://localhost:8000/web-data', {
             method: 'POST',
@@ -43,39 +43,39 @@ const ProductList = () => {
             },
             body: JSON.stringify(data),
         });
-    }, [added_items, query_id]);
+    }, [addedItems, queryId]);
 
-    use_effect(() => {
-        tg.onEvent('mainButtonClicked', on_send_data);
+    useEffect(() => {
+        tg.onEvent('mainButtonClicked', onSendData);
         return () => {
-            tg.offEvent('mainButtonClicked', on_send_data);
+            tg.offEvent('mainButtonClicked', onSendData);
         };
-    }, [on_send_data, tg]);
+    }, [onSendData, tg]);
 
     const onAdd = (product) => {
-        const already_added = added_items.find((item) => item.id === product.id);
+        const already_added = addedItems.find((item) => item.id === product.id);
         let new_Items = [];
 
         if (already_added) {
-            new_Items = added_items.filter((item) => item.id !== product.id);
+            new_Items = addedItems.filter((item) => item.id !== product.id);
         } else {
-            new_Items = [...added_items, product];
+            new_Items = [...addedItems, product];
         }
 
-        set_added_items(new_Items);
+        setAddedItems(new_Items);
 
         if (new_Items.length === 0) {
             tg.MainButton.hide();
         } else {
             tg.MainButton.show();
             tg.MainButton.setParams({
-                text: `Купить ${get_total_price(new_Items)}`,
+                text: `Купить ${getTotalTrice(new_Items)}`,
             });
         }
     };
 
     const filteredProducts = products.filter((product) =>
-        product.title.toLowerCase().includes(search_term.toLowerCase())
+        product.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
@@ -83,8 +83,8 @@ const ProductList = () => {
             <input className={'input'}
                 type="text"
                 placeholder="Поиск"
-                value={search_term}
-                onChange={(e) => set_search_term(e.target.value)}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
             />
 
             <div className={'list'}>
