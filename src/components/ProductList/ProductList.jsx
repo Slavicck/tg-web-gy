@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './ProductList.css';
 import ProductItem from "../ProductItem/ProductItem";
-import {useTelegram} from "../../hooks/useTelegram";
-
+import { useTelegram } from "../../hooks/useTelegram";
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
     const [addedItems, setAddedItems] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const { tg, queryId } = useTelegram();
+    const { tg, user, queryId } = useTelegram();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -24,26 +23,32 @@ const ProductList = () => {
         fetchProducts();
     }, []);
 
-    const getTotalTrice = (items = []) => {
+    const getTotalPrice = (items = []) => {
         return items.reduce((acc, item) => {
             return acc += parseInt(item.price);
         }, 0);
     };
 
-    const onSendData = useCallback(() => {
+    const onSendData = useCallback(async () => {
         const data = {
             products: addedItems,
-            total_price: getTotalTrice(addedItems),
+            total_price: getTotalPrice(addedItems),
+            username: user?.username,
             queryId,
         };
-        fetch('http://localhost:8000/web-data', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-    }, [addedItems, queryId]);
+
+        try {
+            const response = await fetch('http://localhost:8000/web-data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+        } catch (error) {
+            console.error('Error sending data:', error);
+        }
+    }, [addedItems, username, queryId]);
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
@@ -69,7 +74,7 @@ const ProductList = () => {
         } else {
             tg.MainButton.show();
             tg.MainButton.setParams({
-                text: `Купить ${getTotalTrice(new_Items)}`,
+                text: `Купить ${getTotalPrice(new_Items)}`,
             });
         }
     };
@@ -80,7 +85,8 @@ const ProductList = () => {
 
     return (
         <div>
-            <input className={'input'}
+            <input
+                className={'input'}
                 type="text"
                 placeholder="Поиск"
                 value={searchTerm}
